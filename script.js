@@ -13,7 +13,7 @@ function createTable(rows, cols) {
         const row = document.createElement('tr'); // Create a row
         for (let j = 0; j < cols; j++) {
         const cell = document.createElement('td'); // Create a cell
-        cell.textContent = index; // Set the unique index as cell content
+        cell.id = index; // Set the unique index as cell id
         index++; // Increment the index
         row.appendChild(cell); // Add cell to the row
         }
@@ -25,4 +25,4 @@ function createTable(rows, cols) {
     }
 
 // Call the function to create the table
-createTable(7, 6);
+createTable(6, 7);
