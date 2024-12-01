@@ -1,13 +1,8 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-table {
+table, th, td {
     border-collapse: collapse;
-
+    padding: 8px;
   }
 
-th, td {
-    border: 1px solid;
-    padding: 8px;
-}
+/* th, td {
+    
+} */
