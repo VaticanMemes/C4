@@ -5,3 +5,5 @@ Connect 4
 ⚪⚪⚪🔵⚪⚪⚪<br>
 ⁣⚪🔴🔵🔴⚪⚪⚪<br>
 ⚪🔵🔵🔴🔴⚪⚪
+
+Edit: only works for a horizontal win lol

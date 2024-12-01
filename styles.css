@@ -1,8 +1,52 @@
-table, th, td {
-    border-collapse: collapse;
-    padding: 8px;
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
   }
-
-/* th, td {
-    
-} */
+  
+  h1 {
+    margin-top: 20px;
+  }
+  
+  #game-board {
+    display: grid;
+    grid-template-columns: repeat(7, 80px);
+    grid-template-rows: repeat(6, 80px);
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+  }
+  
+  .cell {
+    width: 80px;
+    height: 80px;
+    background-color: #3498db;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .cell::after {
+    content: '';
+    display: block;
+    width: 70px;
+    height: 70px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 5px auto;
+  }
+  
+  .cell.red::after {
+    background-color: red;
+  }
+  
+  .cell.yellow::after {
+    background-color: yellow;
+  }
+  
+  #status {
+    font-size: 1.5em;
+    margin-top: 10px;
+  }
+  

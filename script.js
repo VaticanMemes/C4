@@ -1,29 +1,112 @@
-// Function to generate the Connect 4 board
-function createTable(rows, cols) {
-    const container = document.getElementById('game-board');
+// script.js
+const rows = 6;
+const cols = 7;
+let board = Array.from({ length: rows }, () => Array(cols).fill(null));
+let currentPlayer = 'red'; // Alternate between 'red' and 'yellow'
+let isGameActive = true;
 
-    // Create a table element
-    const table = document.createElement('table');
+const gameBoard = document.getElementById('game-board');
+const statusText = document.getElementById('status');
 
-    // Counter for unique indexes
-    let index = 0;
+// Create the board
+function createBoard() {
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.dataset.row = row;
+      cell.dataset.col = col;
+      cell.addEventListener('click', handleCellClick);
+      gameBoard.appendChild(cell);
+    }
+  }
+}
 
-    // Generate rows and cells
-    for (let i = 0; i < rows; i++) {
-        const row = document.createElement('tr'); // Create a row
-        for (let j = 0; j < cols; j++) {
-        const cell = document.createElement('td'); // Create a cell
-        cell.textContent = index; // Set the unique index as cell content
-        cell.id = index; // Set the unique index as cell id
-        index++; // Increment the index
-        row.appendChild(cell); // Add cell to the row
-        }
-        table.appendChild(row); // Add row to the table
+// Handle cell click
+function handleCellClick(e) {
+  if (!isGameActive) return;
+
+  const col = e.target.dataset.col;
+  const row = findEmptyRow(col);
+
+  if (row !== null) {
+    board[row][col] = currentPlayer;
+    const cell = document.querySelector(
+      `.cell[data-row='${row}'][data-col='${col}']`
+    );
+    cell.classList.add(currentPlayer);
+
+    if (checkWin(row, col)) {
+      statusText.textContent = `Player ${currentPlayer === 'red' ? 1 : 2} Wins!`;
+      isGameActive = false;
+      return;
+    } else if (board.flat().every(cell => cell !== null)) {
+      statusText.textContent = "It's a Draw!";
+      isGameActive = false;
+      return;
     }
 
-    // Append the table to the container
-    container.appendChild(table);
+    // Switch player
+    currentPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
+    statusText.textContent = `Player ${
+      currentPlayer === 'red' ? 1 : 2
+    }'s Turn (${currentPlayer.charAt(0).toUpperCase() + currentPlayer.slice(1)})`;
+  }
+}
+
+// Find the lowest empty row in a column
+function findEmptyRow(col) {
+  for (let row = rows - 1; row >= 0; row--) {
+    if (!board[row][col]) {
+      return row;
+    }
+  }
+  return null;
+}
+
+// Check for a win
+function checkWin(row, col) {
+  const directions = [
+    { r: 0, c: 1 }, // Horizontal
+    { r: 1, c: 0 }, // Vertical
+    { r: 1, c: 1 }, // Diagonal \
+    { r: 1, c: -1 } // Diagonal /
+  ];
+
+  const inBounds = (r, c) => r >= 0 && r < rows && c >= 0 && c < cols;
+
+  for (const { r, c } of directions) {
+    let count = 1;
+
+    // Check in the positive direction
+    for (let i = 1; i <= 3; i++) {
+      const newRow = row + i * r;
+      const newCol = col + i * c;
+      if (inBounds(newRow, newCol) && board[newRow][newCol] === currentPlayer) {
+        count++;
+      } else {
+        break;
+      }
     }
 
-// Call the function to create the table
-createTable(6, 7);
+    // Check in the negative direction
+    for (let i = 1; i <= 3; i++) {
+      const newRow = row - i * r;
+      const newCol = col - i * c;
+      if (inBounds(newRow, newCol) && board[newRow][newCol] === currentPlayer) {
+        count++;
+      } else {
+        break;
+      }
+    }
+
+    // If 4 or more in a row are found
+    if (count >= 4) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Initialize the game
+createBoard();
